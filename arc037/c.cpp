@@ -3,6 +3,18 @@
 #include <algorithm>
 using namespace std;
 
+long long int gcd(long long int x,long long int y){
+    long long int r;
+    if(x == 0 || y == 0)  return 0;
+
+    while((r = x % y) != 0) 
+    {
+         x = y;
+        y = r;
+    }
+    return y;
+}
+
 int main(){
     int n,k; cin >> n >> k;
     vector<long long int> a(n),b(n);
