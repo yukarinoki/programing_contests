@@ -32,37 +32,43 @@ typedef long long ll;
 const ll INF =1LL << 62;
 const int inf =1 << 29;
 
-ll comb(int n, int r){
+ll comb(int num, int rnum){
     ll ans = 1;
-    if(n>r){
-    rep(i,r){
-        ans *= n - i;
-        ans /= i + 1;
-    }
+    if(num>rnum){
+        for(int i=num;i>=num-rnum+1; i--){ans = i * ans; ans = ans / (num-i+1);}
     }
     return ans;
 }
 
 int main(){
-    int n,a,b;
-    cin >> n >> a >> b;
-    vector<int> v(n);
-    rep(i,n) cin >> v[i];
-    sort(all(v),greater<int>());
-    int suma = 0;
-    rep(i,a) suma += v[i];
-    double maxd = ((double)suma) / a;
-    int mem = 0,same=0,s=0;
-    while(a+same<n && v[a+same-1]==v[a+same]) same++;
-    while(a+same-s-2>-1 && v[a+same-s-1]==v[a+same-s-2]) s++;
-    s++;
-    int t = s-same;
-    if(a+same>b) mem = b;
-    else mem = a+same;
-    ll ans = 0;
-    cout << s <<t <<mem - a -same + s + 1<< endl;
-    for(int i=t;i<=mem-(a+same-s-1); i++) ans += comb(s,i);
-    printf("%.7lf\n", maxd);
-    cout << ans << endl;
+    int n,a,b; cin >> n >> a >> b;
+    vector<long long int> v(n); rep(i,n) cin >> v[i];
+    sort(v.begin(), v.end(), greater<long long int>());
+    long long int suma = 0; for(int i=0;i<a;i++) suma += v[i];
+    double ansd = (double)suma / (double)a;
+    bool same = true;
+    rep(i,a+1) if(v[i]!=v[0]) same = false;
+    if(same){
+        int r = a-1;
+        while(r<n&&v[r]==v[a-1]) r++;
+        if(v[r]!=v[a-1]) r--;
+        long long int ans = 0;
+        for(int i=a-1;i<=min(r,b-1);i++) ans = ans + comb(r+1, i+1);
+        printf("%.10lf\n", ansd);
+        cout << ans << endl;   
+    }else {
+        int l = a-1, r = a-1;
+        while(0<=l&&v[l]==v[a-1]) l--;
+        if(v[l]!=v[a-1]) l++;
+        while(r<n&&v[r]==v[a-1]) r++;
+        if(v[r]!=v[a-1]) r--;
+        //long long int comb = 1;
+        int num = r-l+1;
+        int rnum = a-1-l+1;
+        
+        printf("%.10lf\n", ansd);
+        cout << comb(num,rnum) << endl;   
+    }
+    
     return 0;
 }
